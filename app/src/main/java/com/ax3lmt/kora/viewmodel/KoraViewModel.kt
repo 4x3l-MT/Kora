@@ -41,6 +41,9 @@ class KoraViewModel(application: Application) : AndroidViewModel(application) {
     private val _isOnboardingCompletedState = MutableStateFlow(repository.isOnboardingCompleted())
     val isOnboardingCompletedState: StateFlow<Boolean> = _isOnboardingCompletedState.asStateFlow()
 
+    private val _appThemeState = MutableStateFlow(repository.getThemeSetting())
+    val appThemeState: StateFlow<String> = _appThemeState.asStateFlow()
+
     private val _defaultCycleDaysState = MutableStateFlow(repository.getDefaultCycleSetting())
     val defaultCycleDaysState: StateFlow<Int> = _defaultCycleDaysState.asStateFlow()
 
@@ -116,6 +119,14 @@ class KoraViewModel(application: Application) : AndroidViewModel(application) {
             _isOnboardingCompletedState.value = true
             _userMessage.value = "¡Bienvenida a Kora! Configuración completada."
             refreshAll()
+        }
+    }
+
+    fun updateTheme(themeMode: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.saveThemeSetting(themeMode)
+            _appThemeState.value = themeMode
+            _userMessage.value = "Tema de la aplicación actualizado"
         }
     }
 

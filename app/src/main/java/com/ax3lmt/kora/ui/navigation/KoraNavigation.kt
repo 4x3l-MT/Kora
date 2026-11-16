@@ -1,13 +1,16 @@
 package com.ax3lmt.kora.ui.navigation
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.WaterDrop
+import androidx.compose.ui.res.painterResource
+import com.ax3lmt.kora.R
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -164,11 +167,12 @@ fun KoraNavigation(
                         }
                     },
                     actions = {
-                        Icon(
-                            imageVector = Icons.Default.WaterDrop,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.padding(end = 16.dp)
+                        Image(
+                            painter = painterResource(id = R.mipmap.ic_launcher_foreground),
+                            contentDescription = "Logo Kora",
+                            modifier = Modifier
+                                .padding(end = 16.dp)
+                                .size(36.dp)
                         )
                     },
                     colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
@@ -214,7 +218,7 @@ fun KoraNavigation(
                             prediction = prediction,
                             recommendations = recommendations,
                             todayLog = todayLog,
-                            onNavigateToLog = { date ->
+                            onNavigateToLog = { date: LocalDate ->
                                 viewModel.selectDate(date)
                                 navController.navigate(Screen.LogSymptom.createRoute(date.toString()))
                             },
@@ -228,7 +232,7 @@ fun KoraNavigation(
                         CalendarScreen(
                             prediction = prediction,
                             allLogs = allLogs,
-                            onDateSelected = { date ->
+                            onDateSelected = { date: LocalDate ->
                                 viewModel.selectDate(date)
                                 navController.navigate(Screen.LogSymptom.createRoute(date.toString()))
                             }
@@ -279,9 +283,14 @@ fun KoraNavigation(
                     }
 
                     composable(Screen.Settings.route) {
+                        val appTheme by viewModel.appThemeState.collectAsState()
                         SettingsScreen(
                             currentDefaultCycle = defaultCycle,
                             currentDefaultPeriod = defaultPeriod,
+                            currentTheme = appTheme,
+                            onThemeChange = { newTheme ->
+                                viewModel.updateTheme(newTheme)
+                            },
                             onSaveSettings = { cycleDays, periodDays ->
                                 viewModel.updateSettings(cycleDays, periodDays)
                             },

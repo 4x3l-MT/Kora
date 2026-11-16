@@ -1,5 +1,6 @@
 package com.ax3lmt.kora.ui.screens
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,7 +23,8 @@ import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.MedicalServices
-import androidx.compose.material.icons.filled.WaterDrop
+import androidx.compose.ui.res.painterResource
+import com.ax3lmt.kora.R
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -141,17 +143,29 @@ private fun HeaderSection(today: LocalDate) {
     val formatter = DateTimeFormatter.ofPattern("EEEE, d 'de' MMMM", Locale.forLanguageTag("es-ES"))
     val formattedDate = today.format(formatter).replaceFirstChar { it.uppercase() }
 
-    Column {
-        Text(
-            text = "Tu Salud & Ciclo Local",
-            style = MaterialTheme.typography.headlineMedium,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.primary
-        )
-        Text(
-            text = formattedDate,
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text = "Tu Salud & Ciclo Local",
+                style = MaterialTheme.typography.headlineMedium,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary
+            )
+            Text(
+                text = formattedDate,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+
+        Image(
+            painter = painterResource(id = R.mipmap.ic_launcher_foreground),
+            contentDescription = "Logo Kora",
+            modifier = Modifier.size(54.dp)
         )
     }
 }
@@ -205,12 +219,12 @@ private fun CycleStatusCard(
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     if (isPeriodToday) {
-                        Icon(
-                            imageVector = Icons.Default.WaterDrop,
+                        Image(
+                            painter = painterResource(id = R.mipmap.ic_launcher_foreground),
                             contentDescription = null,
-                            tint = roseAccent,
-                            modifier = Modifier.size(36.dp)
+                            modifier = Modifier.size(44.dp)
                         )
+                        Spacer(modifier = Modifier.height(2.dp))
                         Text(
                             text = "Menstruación",
                             fontSize = 14.sp,

@@ -66,6 +66,14 @@ class MenstrualRepository(context: Context) {
         return dbHelper.getSetting("default_period_length", "5").toIntOrNull() ?: 5
     }
 
+    fun saveThemeSetting(themeMode: String) {
+        dbHelper.saveSetting("app_theme", themeMode)
+    }
+
+    fun getThemeSetting(): String {
+        return dbHelper.getSetting("app_theme", "SYSTEM")
+    }
+
     fun saveLog(log: DailyLog) {
         val previousLog = dbHelper.getDailyLog(log.date.minusDays(1))
         val isFirstDayOfPeriod = log.isPeriodDay && (previousLog == null || !previousLog.isPeriodDay)
